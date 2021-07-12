@@ -1,0 +1,710 @@
+commit 3dcca3eb58581ac76d6cfcc8fec9cffafafadf9e
+Author: lelenei <zwpsky@gmail.com>
+Date:   Tue Jun 15 17:03:11 2021 +0800
+
+    feat: red packet confirm dialog
+
+diff --git a/packages/maskbook/src/_locales/en/messages.json b/packages/maskbook/src/_locales/en/messages.json
+index 32790f267..e4a1bc175 100644
+--- a/packages/maskbook/src/_locales/en/messages.json
++++ b/packages/maskbook/src/_locales/en/messages.json
+@@ -365,7 +365,10 @@
+     "plugin_red_packet_claiming_from": "Claiming red packet from {{name}}",
+     "plugin_red_packet_refunding_for": "Refunding red packet for {{balance}} {{symbol}}",
+     "plugin_red_packet_amount_per_share": "Amount per Share",
+-    "plugin_red_packet_send_symbol": "Send {{symbol}}",
++    "plugin_red_packet_send_symbol": "Send {{amount}} {{symbol}}",
++    "plugin_red_packet_amount_total": "Amount Totals",
++    "plugin_red_packet_next": "Next",
++    "plugin_red_packet_back": "Back",
+     "plugin_red_packet_create_with_token": "Creating red packet with {{symbol}}",
+     "plugin_red_packet_history_duration": "Time: {{startTime}} ~ {{endTime}} (UTC+8)",
+     "plugin_red_packet_history_total_amount": "Total Amount: {{amount}} {{symbol}}",
+@@ -373,6 +376,8 @@
+     "plugin_red_packet_history_claimed": "Claimed: <strong>{{claimedShares}}/{{shares}}</strong> Share",
+     "plugin_red_packet_history_split_mode": "Split Mode: {{mode}}",
+     "plugin_red_packet_history_send": "Send",
++    "plugin_red_packet_hit": "You can withdraw the remaining balance 24 hours after the red packet is sent",
++    "plugin_red_packet_token": "Token",
+     "plugin_gitcoin_readme": "By using this service, you will also be contributing 5% of your contribution to the <fund>Gitcoin grants development fund</fund>.",
+     "plugin_gitcoin_readme_fund_link": "https://gitcoin.co/grants/86/gitcoin-sustainability-fund",
+     "plugin_gitcoin_select_a_token": "Select a token",
+diff --git a/packages/maskbook/src/_locales/ja/messages.json b/packages/maskbook/src/_locales/ja/messages.json
+index 8c1e1c99f..c3303bc3b 100644
+--- a/packages/maskbook/src/_locales/ja/messages.json
++++ b/packages/maskbook/src/_locales/ja/messages.json
+@@ -366,6 +366,9 @@
+     "plugin_red_packet_refunding_for": "{{balance}} {{symbol}} の投げ銭を払い戻し中",
+     "plugin_red_packet_amount_per_share": "1株当たりの金額",
+     "plugin_red_packet_send_symbol": "{{symbol}} を送る",
++    "plugin_red_packet_amount_total": "",
++    "plugin_red_packet_next": "",
++    "plugin_red_packet_back": "",
+     "plugin_red_packet_create_with_token": "{{symbol}} で投げ銭を作成する",
+     "plugin_red_packet_history_duration": "",
+     "plugin_red_packet_history_total_amount": "",
+@@ -373,6 +376,8 @@
+     "plugin_red_packet_history_claimed": "",
+     "plugin_red_packet_history_split_mode": "",
+     "plugin_red_packet_history_send": "",
++    "plugin_red_packet_hit": "",
++    "plugin_red_packet_token": "",
+     "plugin_gitcoin_readme": "このサービスを利用するにあたり、寄付金額の 5% が <fund>Gitcoin grants development fund</fund> に寄付されます",
+     "plugin_gitcoin_readme_fund_link": "https://gitcoin.co/grants/86/gitcoin-sustainability-fund",
+     "plugin_gitcoin_select_a_token": "トークンを選択する",
+diff --git a/packages/maskbook/src/_locales/ko/messages.json b/packages/maskbook/src/_locales/ko/messages.json
+index 4b2c30fd0..6e0aec939 100644
+--- a/packages/maskbook/src/_locales/ko/messages.json
++++ b/packages/maskbook/src/_locales/ko/messages.json
+@@ -366,6 +366,9 @@
+     "plugin_red_packet_refunding_for": "{{balance}} {{symbol}} 빨간 백 반환 중",
+     "plugin_red_packet_amount_per_share": "공유 총액",
+     "plugin_red_packet_send_symbol": "{{symbol}} 보내기",
++    "plugin_red_packet_amount_total": "",
++    "plugin_red_packet_next": "",
++    "plugin_red_packet_back": "",
+     "plugin_red_packet_create_with_token": "{{symbol}} 으로 빨간 백 만드는 중",
+     "plugin_red_packet_history_duration": "",
+     "plugin_red_packet_history_total_amount": "",
+@@ -373,6 +376,8 @@
+     "plugin_red_packet_history_claimed": "",
+     "plugin_red_packet_history_split_mode": "",
+     "plugin_red_packet_history_send": "",
++    "plugin_red_packet_hit": "",
++    "plugin_red_packet_token": "",
+     "plugin_gitcoin_readme": "이 서비스를 이용하면 <fund>Gitcoin 개발 기금에 당신의 기여금</fund>의 5%를 기부할 것이다.",
+     "plugin_gitcoin_readme_fund_link": "https://gitcoin.co/grants/86/gitcoin-sustainability-fund",
+     "plugin_gitcoin_select_a_token": "토큰 선택",
+diff --git a/packages/maskbook/src/_locales/zh/messages.json b/packages/maskbook/src/_locales/zh/messages.json
+index b7731eb76..382e58504 100644
+--- a/packages/maskbook/src/_locales/zh/messages.json
++++ b/packages/maskbook/src/_locales/zh/messages.json
+@@ -366,6 +366,9 @@
+     "plugin_red_packet_refunding_for": "紅包退款 {{balance}} {{symbol}}",
+     "plugin_red_packet_amount_per_share": "每次分享總額",
+     "plugin_red_packet_send_symbol": "送出 {{symbol}}",
++    "plugin_red_packet_amount_total": "",
++    "plugin_red_packet_next": "",
++    "plugin_red_packet_back": "",
+     "plugin_red_packet_create_with_token": "使用 {{symbol}} 建立紅包",
+     "plugin_red_packet_history_duration": "",
+     "plugin_red_packet_history_total_amount": "",
+@@ -373,6 +376,8 @@
+     "plugin_red_packet_history_claimed": "",
+     "plugin_red_packet_history_split_mode": "",
+     "plugin_red_packet_history_send": "",
++    "plugin_red_packet_hit": "",
++    "plugin_red_packet_token": "",
+     "plugin_gitcoin_readme": "通過使用此服務，您還將向 <fund>Gitcoin grants development fund</fund> 捐款 5%",
+     "plugin_gitcoin_readme_fund_link": "https://gitcoin.co/grants/86/gitcoin-sustainability-fund",
+     "plugin_gitcoin_select_a_token": "選擇一個代幣",
+diff --git a/packages/maskbook/src/plugins/RedPacket/UI/RedPacketDialog.tsx b/packages/maskbook/src/plugins/RedPacket/UI/RedPacketDialog.tsx
+index d493aab6c..155bd305d 100644
+--- a/packages/maskbook/src/plugins/RedPacket/UI/RedPacketDialog.tsx
++++ b/packages/maskbook/src/plugins/RedPacket/UI/RedPacketDialog.tsx
+@@ -1,17 +1,36 @@
+-import { useState, useCallback } from 'react'
++import { useState, useCallback, useRef, useEffect } from 'react'
+ import { DialogContent } from '@material-ui/core'
+-import { usePortalShadowRoot } from '@dimensiondev/maskbook-shared'
+-import { useI18N } from '../../../utils'
++import { formatBalance, usePortalShadowRoot } from '@dimensiondev/maskbook-shared'
++import { useI18N, useRemoteControlledDialog } from '../../../utils'
+ import AbstractTab, { AbstractTabProps } from '../../../components/shared/AbstractTab'
+-import { RedPacketJSONPayload, DialogTabs } from '../types'
++import { RedPacketJSONPayload, DialogTabs, RedPacketRecord } from '../types'
+ import { editActivatedPostMetadata } from '../../../protocols/typed-message/global-state'
+-import { RedPacketMetaKey } from '../constants'
++import { RedPacketMetaKey, RED_PACKET_CONSTANTS } from '../constants'
+ import { RedPacketForm } from './RedPacketForm'
+ import { RedPacketHistoryList } from './RedPacketHistoryList'
+ import { InjectedDialog } from '../../../components/shared/InjectedDialog'
+ import Services from '../../../extension/service'
+ import Web3Utils from 'web3-utils'
+-import { useAccount, useChainId } from '@dimensiondev/web3-shared'
++import {
++    EthereumTokenType,
++    getChainName,
++    NetworkType,
++    TransactionStateType,
++    useAccount,
++    useChainId,
++    useConstant,
++    useNetworkType,
++} from '@dimensiondev/web3-shared'
++import { ConfirmRedPacketForm } from './confirmRedPacketForm'
++import { RedPacketSettings, useCreateCallback } from '../hooks/useCreateCallback'
++import { EthereumMessages } from '../../Ethereum/messages'
++import { omit } from 'lodash-es'
++import { RedPacketRPC } from '../messages'
++
++enum CreateRedPacketPageStep {
++    NewRedPacketPage = 'new',
++    ConfirmPage = 'confirm',
++}
+ 
+ interface RedPacketDialogProps extends withClasses<never> {
+     open: boolean
+@@ -24,6 +43,13 @@ export default function RedPacketDialog(props: RedPacketDialogProps) {
+     const { onConfirm } = props
+     const chainId = useChainId()
+     const account = useAccount()
++    const networkType = useNetworkType()
++    const contract_version = networkType === NetworkType.Ethereum ? 2 : 3
++    const contract_address = useConstant(
++        RED_PACKET_CONSTANTS,
++        networkType === NetworkType.Ethereum ? 'HAPPY_RED_PACKET_ADDRESS_V2' : 'HAPPY_RED_PACKET_ADDRESS_V3',
++    )
++    const [settings, setSettings] = useState<Omit<RedPacketSettings, 'password'>>()
+ 
+     const onCreateOrSelect = useCallback(
+         async (payload: RedPacketJSONPayload) => {
+@@ -51,20 +77,135 @@ export default function RedPacketDialog(props: RedPacketDialogProps) {
+         [onConfirm, chainId],
+     )
+ 
++    //#region blocking
++    // password should remain the same rather than change each time when createState change,
++    //  otherwise password in database would be different from creating red-packet.
++    const [createSettings, createState, createCallback, resetCreateCallback] = useCreateCallback(
++        settings!,
++        contract_version,
++    )
++    //#endregion
++
++    // assemble JSON payload
++    const payload = useRef<RedPacketJSONPayload>({
++        contract_address,
++        contract_version,
++        network: getChainName(chainId),
++    } as RedPacketJSONPayload)
++
++    //#region remote controlled transaction dialog
++    const { setDialog: setTransactionDialog } = useRemoteControlledDialog(
++        EthereumMessages.events.transactionDialogUpdated,
++        (ev) => {
++            if (ev.open) return
++
++            // reset state
++            resetCreateCallback()
++
++            // the settings is not available
++            if (!createSettings?.token) return
++
++            // TODO:
++            // earily return happended
++            // we should guide user to select the red packet in the existing list
++            if (createState.type !== TransactionStateType.CONFIRMED) return
++
++            const { receipt } = createState
++            const CreationSuccess = (receipt.events?.CreationSuccess.returnValues ?? {}) as {
++                creation_time: string
++                creator: string
++                id: string
++                token_address: string
++                total: string
++            }
++
++            payload.current.sender = {
++                address: account,
++                name: createSettings.name,
++                message: createSettings.message,
++            }
++            payload.current.is_random = createSettings.isRandom
++            payload.current.shares = createSettings.shares
++            payload.current.password = createSettings.password
++            payload.current.token_type = createSettings.token.type
++            payload.current.rpid = CreationSuccess.id
++            payload.current.total = CreationSuccess.total
++            payload.current.duration = createSettings.duration
++            payload.current.creation_time = Number.parseInt(CreationSuccess.creation_time, 10) * 1000
++
++            if (createSettings.token.type === EthereumTokenType.ERC20)
++                payload.current.token = {
++                    name: '',
++                    symbol: '',
++                    ...omit(createSettings.token, ['type', 'chainId']),
++                }
++
++            setSettings(undefined)
++            // output the redpacket as JSON payload
++            onCreateOrSelect(payload.current)
++        },
++    )
++
++    // open the transaction dialog
++    useEffect(() => {
++        // storing the created red packet in DB, it helps retrieve red packet password later
++        // save to the database early, otherwise red-packet would lose when close the tx dialog or
++        //  web page before create successfully.
++        if (createState.type === TransactionStateType.WAIT_FOR_CONFIRMING) {
++            payload.current.txid = createState.hash
++            const record: RedPacketRecord = {
++                id: createState.hash!,
++                from: '',
++                password: createSettings!.password,
++                contract_version,
++            }
++            RedPacketRPC.discoverRedPacket(record)
++        }
++
++        if (!createSettings?.token || createState.type === TransactionStateType.UNKNOWN) return
++        setTransactionDialog({
++            open: true,
++            state: createState,
++            summary: t('plugin_red_packet_create_with_token', {
++                symbol: `${formatBalance(createSettings?.total, createSettings?.token?.decimals)} ${
++                    createSettings?.token.symbol
++                }`,
++            }),
++        })
++    }, [createState /* update tx dialog only if state changed */])
++    //#endregion
++
++    const [step, setStep] = useState(CreateRedPacketPageStep.NewRedPacketPage)
++    const onBack = useCallback(() => {
++        if (step === CreateRedPacketPageStep.ConfirmPage) setStep(CreateRedPacketPageStep.NewRedPacketPage)
++    }, [step])
++    const onNext = useCallback(() => {
++        if (step === CreateRedPacketPageStep.NewRedPacketPage) setStep(CreateRedPacketPageStep.ConfirmPage)
++    }, [step])
+     const state = useState(DialogTabs.create)
+ 
+     const onClose = useCallback(() => {
++        setStep(CreateRedPacketPageStep.NewRedPacketPage)
+         const [, setValue] = state
+         setValue(DialogTabs.create)
+         props.onClose()
+     }, [props, state])
+ 
++    const onChange = useCallback((val: Omit<RedPacketSettings, 'password'>) => {
++        setSettings(val)
++    }, [])
++
+     const tabProps: AbstractTabProps = {
+         tabs: [
+             {
+                 label: t('plugin_red_packet_create_new'),
+                 children: usePortalShadowRoot((container) => (
+-                    <RedPacketForm onCreate={onCreateOrSelect} SelectMenuProps={{ container }} />
++                    <RedPacketForm
++                        origin={settings}
++                        onNext={onNext}
++                        onChange={onChange}
++                        SelectMenuProps={{ container }}
++                    />
+                 )),
+                 sx: { p: 0 },
+             },
+@@ -80,7 +221,10 @@ export default function RedPacketDialog(props: RedPacketDialogProps) {
+     return (
+         <InjectedDialog open={props.open} title={t('plugin_red_packet_display_name')} onClose={onClose}>
+             <DialogContent>
+-                <AbstractTab height={320} {...tabProps} />
++                {step === CreateRedPacketPageStep.NewRedPacketPage ? <AbstractTab height={320} {...tabProps} /> : null}
++                {step === CreateRedPacketPageStep.ConfirmPage ? (
++                    <ConfirmRedPacketForm onBack={onBack} onCreate={createCallback} settings={settings} />
++                ) : null}
+             </DialogContent>
+         </InjectedDialog>
+     )
+diff --git a/packages/maskbook/src/plugins/RedPacket/UI/RedPacketForm.tsx b/packages/maskbook/src/plugins/RedPacket/UI/RedPacketForm.tsx
+index 2c2508587..193728395 100644
+--- a/packages/maskbook/src/plugins/RedPacket/UI/RedPacketForm.tsx
++++ b/packages/maskbook/src/plugins/RedPacket/UI/RedPacketForm.tsx
+@@ -1,6 +1,5 @@
+-import { useState, useRef, useCallback, useMemo, ChangeEvent, useEffect } from 'react'
++import { useState, useCallback, useMemo, ChangeEvent } from 'react'
+ import { makeStyles, FormControl, TextField, InputLabel, Select, MenuItem, MenuProps } from '@material-ui/core'
+-import { omit } from 'lodash-es'
+ import { v4 as uuid } from 'uuid'
+ import BigNumber from 'bignumber.js'
+ 
+@@ -13,8 +12,6 @@ import {
+     useConstant,
+     useChainId,
+     useNetworkType,
+-    TransactionStateType,
+-    getChainName,
+     useNativeTokenDetailed,
+     useTokenBalance,
+ } from '@dimensiondev/web3-shared'
+@@ -28,14 +25,12 @@ import {
+     RED_PACKET_DEFAULT_SHARES,
+ } from '../constants'
+ import { TokenAmountPanel } from '../../../web3/UI/TokenAmountPanel'
+-import { useCreateCallback } from '../hooks/useCreateCallback'
++import type { RedPacketSettings } from '../hooks/useCreateCallback'
+ import ActionButton from '../../../extension/options-page/DashboardComponents/ActionButton'
+-import type { RedPacketJSONPayload, RedPacketRecord } from '../types'
++import type { RedPacketJSONPayload } from '../types'
+ import { SelectTokenDialogEvent, WalletMessages } from '../../Wallet/messages'
+-import { EthereumMessages } from '../../Ethereum/messages'
+ import { EthereumWalletConnectedBoundary } from '../../../web3/UI/EthereumWalletConnectedBoundary'
+ import { EthereumERC20TokenApprovedBoundary } from '../../../web3/UI/EthereumERC20TokenApprovedBoundary'
+-import { RedPacketRPC } from '../messages'
+ 
+ const useStyles = makeStyles((theme) => ({
+     line: {
+@@ -68,12 +63,16 @@ const useStyles = makeStyles((theme) => ({
+ 
+ export interface RedPacketFormProps extends withClasses<never> {
+     onCreate?(payload: RedPacketJSONPayload): void
++    onChange(settings: Omit<RedPacketSettings, 'password'>): void
+     SelectMenuProps?: Partial<MenuProps>
++    origin?: Omit<RedPacketSettings, 'password'>
++    onNext: () => void
+ }
+ 
+ export function RedPacketForm(props: RedPacketFormProps) {
+     const { t } = useI18N()
+     const classes = useStylesExtends(useStyles(), props)
++    const { onChange, onNext, origin } = props
+ 
+     // context
+     const account = useAccount()
+@@ -87,7 +86,7 @@ export function RedPacketForm(props: RedPacketFormProps) {
+ 
+     //#region select token
+     const { value: nativeTokenDetailed } = useNativeTokenDetailed()
+-    const [token = nativeTokenDetailed, setToken] = useState<FungibleTokenDetailed | undefined>()
++    const [token = nativeTokenDetailed, setToken] = useState<FungibleTokenDetailed | undefined>(origin?.token)
+     const [id] = useState(uuid())
+     const { setDialog: setSelectTokenDialog } = useRemoteControlledDialog(
+         WalletMessages.events.selectTokenDialogUpdated,
+@@ -112,13 +111,13 @@ export function RedPacketForm(props: RedPacketFormProps) {
+     //#endregion
+ 
+     //#region packet settings
+-    const [isRandom, setIsRandom] = useState(0)
+-    const [message, setMessage] = useState('Best Wishes!')
++    const [isRandom, setIsRandom] = useState(origin?.isRandom ? 1 : 0)
++    const [message, setMessage] = useState(origin?.message)
+     const currentIdentity = useCurrentIdentity()
+     const senderName = currentIdentity?.identifier.userId ?? currentIdentity?.linkedPersona?.nickname ?? 'Unknown User'
+ 
+     // shares
+-    const [shares, setShares] = useState<number | ''>(RED_PACKET_DEFAULT_SHARES)
++    const [shares, setShares] = useState<number | ''>(origin?.shares || RED_PACKET_DEFAULT_SHARES)
+     const onShareChange = useCallback(
+         (ev: ChangeEvent<HTMLInputElement>) => {
+             const shares_ = ev.currentTarget.value.replace(/[,\.]/g, '')
+@@ -133,7 +132,11 @@ export function RedPacketForm(props: RedPacketFormProps) {
+     )
+ 
+     // amount
+-    const [rawAmount, setRawAmount] = useState('')
++    const [rawAmount, setRawAmount] = useState(
++        origin?.isRandom
++            ? formatBalance(new BigNumber(origin?.total || 0), origin.token?.decimals ?? 0)
++            : formatBalance(new BigNumber(origin?.total ?? '0').div(origin?.shares || 1), origin?.token?.decimals ?? 0),
++    )
+     const amount = new BigNumber(rawAmount || '0').multipliedBy(pow10(token?.decimals ?? 0))
+     const totalAmount = isRandom ? new BigNumber(amount) : new BigNumber(amount).multipliedBy(shares || '0')
+ 
+@@ -144,116 +147,6 @@ export function RedPacketForm(props: RedPacketFormProps) {
+     )
+     //#endregion
+ 
+-    //#region blocking
+-    // password should remain the same rather than change each time when createState change,
+-    //  otherwise password in database would be different from creating red-packet.
+-    const [createSettings, createState, createCallback, resetCreateCallback] = useCreateCallback(
+-        {
+-            duration: 60 /* seconds */ * 60 /* mins */ * 24 /* hours */,
+-            isRandom: Boolean(isRandom),
+-            name: senderName,
+-            message,
+-            shares: shares || 0,
+-            token,
+-            total: totalAmount.toFixed(),
+-        },
+-        contract_version,
+-    )
+-    //#endregion
+-
+-    // assemble JSON payload
+-    const payload = useRef<RedPacketJSONPayload>({
+-        contract_address,
+-        contract_version,
+-        network: getChainName(chainId),
+-    } as RedPacketJSONPayload)
+-
+-    useEffect(() => {
+-        payload.current.network = getChainName(chainId)
+-    }, [chainId])
+-
+-    //#region remote controlled transaction dialog
+-    const { setDialog: setTransactionDialog } = useRemoteControlledDialog(
+-        EthereumMessages.events.transactionDialogUpdated,
+-        (ev) => {
+-            if (ev.open) return
+-
+-            // reset state
+-            resetCreateCallback()
+-
+-            // the settings is not available
+-            if (!createSettings?.token) return
+-
+-            // TODO:
+-            // earily return happended
+-            // we should guide user to select the red packet in the existing list
+-            if (createState.type !== TransactionStateType.CONFIRMED) return
+-
+-            const { receipt } = createState
+-            const CreationSuccess = (receipt.events?.CreationSuccess.returnValues ?? {}) as {
+-                creation_time: string
+-                creator: string
+-                id: string
+-                token_address: string
+-                total: string
+-            }
+-
+-            payload.current.sender = {
+-                address: account,
+-                name: createSettings.name,
+-                message: createSettings.message,
+-            }
+-            payload.current.is_random = createSettings.isRandom
+-            payload.current.shares = createSettings.shares
+-            payload.current.password = createSettings.password
+-            payload.current.token_type = createSettings.token.type
+-            payload.current.rpid = CreationSuccess.id
+-            payload.current.total = CreationSuccess.total
+-            payload.current.duration = createSettings.duration
+-            payload.current.creation_time = Number.parseInt(CreationSuccess.creation_time, 10) * 1000
+-
+-            if (createSettings.token.type === EthereumTokenType.ERC20)
+-                payload.current.token = {
+-                    name: '',
+-                    symbol: '',
+-                    ...omit(createSettings.token, ['type', 'chainId']),
+-                }
+-
+-            // output the redpacket as JSON payload
+-            props.onCreate?.(payload.current)
+-
+-            // always reset amount
+-            setRawAmount('0')
+-        },
+-    )
+-
+-    // open the transaction dialog
+-    useEffect(() => {
+-        // storing the created red packet in DB, it helps retrieve red packet password later
+-        // save to the database early, otherwise red-packet would lose when close the tx dialog or
+-        //  web page before create successfully.
+-        if (createState.type === TransactionStateType.WAIT_FOR_CONFIRMING) {
+-            payload.current.txid = createState.hash
+-            const record: RedPacketRecord = {
+-                id: createState.hash!,
+-                from: '',
+-                password: createSettings!.password,
+-                contract_version,
+-            }
+-            RedPacketRPC.discoverRedPacket(record)
+-        }
+-
+-        if (!token || createState.type === TransactionStateType.UNKNOWN) return
+-        setTransactionDialog({
+-            open: true,
+-            state: createState,
+-            summary: t('plugin_red_packet_create_with_token', {
+-                symbol: `${formatBalance(totalAmount, token.decimals)} ${token.symbol}`,
+-            }),
+-        })
+-    }, [createState /* update tx dialog only if state changed */])
+-    //#endregion
+-
+     const validationMessage = useMemo(() => {
+         if (!token) return t('plugin_wallet_select_a_token')
+         if (!account) return t('plugin_wallet_connect_a_wallet')
+@@ -265,6 +158,19 @@ export function RedPacketForm(props: RedPacketFormProps) {
+         return ''
+     }, [account, amount, totalAmount, shares, token, tokenBalance])
+ 
++    const onClick = useCallback(() => {
++        onChange({
++            duration: 60 /* seconds */ * 60 /* mins */ * 24 /* hours */,
++            isRandom: Boolean(isRandom),
++            name: senderName,
++            message: message || t('plugin_red_packet_best_wishes'),
++            shares: shares || 0,
++            token,
++            total: totalAmount.toFixed(),
++        })
++        onNext()
++    }, [onChange, totalAmount, token, shares, senderName, isRandom])
++
+     if (!token) return null
+     return (
+         <>
+@@ -336,6 +242,7 @@ export function RedPacketForm(props: RedPacketFormProps) {
+                     inputProps={{ placeholder: t('plugin_red_packet_best_wishes') }}
+                     label={t('plugin_red_packet_attached_message')}
+                     defaultValue={t('plugin_red_packet_best_wishes')}
++                    value={message}
+                 />
+             </div>
+             <EthereumWalletConnectedBoundary>
+@@ -349,11 +256,8 @@ export function RedPacketForm(props: RedPacketFormProps) {
+                         className={classes.button}
+                         fullWidth
+                         disabled={!!validationMessage}
+-                        onClick={createCallback}>
+-                        {validationMessage ||
+-                            t('plugin_red_packet_send_symbol', {
+-                                symbol: `${formatBalance(totalAmount, token.decimals)} ${token.symbol}`,
+-                            })}
++                        onClick={onClick}>
++                        {validationMessage || t('plugin_red_packet_next')}
+                     </ActionButton>
+                 </EthereumERC20TokenApprovedBoundary>
+             </EthereumWalletConnectedBoundary>
+diff --git a/packages/maskbook/src/plugins/RedPacket/UI/confirmRedPacketForm.tsx b/packages/maskbook/src/plugins/RedPacket/UI/confirmRedPacketForm.tsx
+new file mode 100644
+index 000000000..69b6613ba
+--- /dev/null
++++ b/packages/maskbook/src/plugins/RedPacket/UI/confirmRedPacketForm.tsx
+@@ -0,0 +1,141 @@
++import { isNative, resolveTokenLinkOnExplorer } from '@dimensiondev/web3-shared'
++import { Grid, Link, makeStyles, Typography, Paper } from '@material-ui/core'
++import { useI18N } from '../../../utils'
++import type { RedPacketSettings } from '../hooks/useCreateCallback'
++import LaunchIcon from '@material-ui/icons/Launch'
++import ActionButton from '../../../extension/options-page/DashboardComponents/ActionButton'
++import { formatBalance, FormattedBalance } from '@dimensiondev/maskbook-shared'
++import BigNumber from 'bignumber.js'
++
++const useStyles = makeStyles((theme) => ({
++    link: {},
++    grid: {
++        paddingTop: theme.spacing(2),
++        paddingBottom: theme.spacing(2),
++    },
++    hit: {
++        backgroundColor: theme.palette.divider,
++        paddingTop: theme.spacing(1),
++        paddingBottom: theme.spacing(1),
++        marginBottom: theme.spacing(1),
++    },
++}))
++
++export interface ConfirmRedPacketFormProps {
++    onBack: () => void
++    onCreate: () => void
++    settings?: Omit<RedPacketSettings, 'password'>
++}
++
++export function ConfirmRedPacketForm(props: ConfirmRedPacketFormProps) {
++    const { t } = useI18N()
++    const { onBack, settings, onCreate } = props
++    const classes = useStyles()
++
++    return (
++        <Grid container spacing={2} className={classes.grid}>
++            <Grid item xs={12}>
++                <Typography variant="h4" color="textPrimary" align="center">
++                    {settings?.message}
++                </Typography>
++            </Grid>
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textSecondary">
++                    {t('plugin_red_packet_token')}
++                </Typography>
++            </Grid>
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textPrimary" align="right">
++                    {settings?.token?.symbol}
++                    {isNative(settings?.token?.address!) ? null : (
++                        <Link
++                            className={classes.link}
++                            href={resolveTokenLinkOnExplorer(settings?.token!)}
++                            target="_blank"
++                            rel="noopener noreferrer"
++                            onClick={stop}>
++                            <LaunchIcon fontSize="small" />
++                        </Link>
++                    )}
++                </Typography>
++            </Grid>
++
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textSecondary">
++                    {t('plugin_red_packet_split_mode')}
++                </Typography>
++            </Grid>
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textPrimary" align="right">
++                    {settings?.isRandom ? t('plugin_red_packet_random') : t('plugin_red_packet_average')}
++                </Typography>
++            </Grid>
++
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textSecondary">
++                    {t('plugin_red_packet_shares')}
++                </Typography>
++            </Grid>
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textPrimary" align="right">
++                    {settings?.shares}
++                </Typography>
++            </Grid>
++
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textSecondary">
++                    {t('plugin_red_packet_amount_per_share')}
++                </Typography>
++            </Grid>
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textPrimary" align="right">
++                    {`${
++                        settings?.isRandom
++                            ? formatBalance(new BigNumber(settings?.total || 0), settings?.token?.decimals ?? 0)
++                            : formatBalance(
++                                  new BigNumber(settings?.total || 0).div(settings?.shares || 1),
++                                  settings?.token?.decimals ?? 18,
++                              )
++                    } ${settings?.token?.symbol}`}
++                </Typography>
++            </Grid>
++
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textSecondary">
++                    {t('plugin_red_packet_amount_total')}
++                </Typography>
++            </Grid>
++            <Grid item xs={6}>
++                <Typography variant="body1" color="textPrimary" align="right">
++                    <FormattedBalance
++                        value={settings?.total}
++                        decimals={settings?.token?.decimals!}
++                        symbol={settings?.token?.symbol!}
++                    />
++                </Typography>
++            </Grid>
++
++            <Grid item xs={12}>
++                <Paper className={classes.hit}>
++                    <Typography variant="body1" color="textPrimary" align="center">
++                        {t('plugin_red_packet_hit')}
++                    </Typography>
++                </Paper>
++            </Grid>
++
++            <Grid item xs={6}>
++                <ActionButton variant="contained" size="large" fullWidth onClick={onBack}>
++                    {t('plugin_red_packet_back')}
++                </ActionButton>
++            </Grid>
++            <Grid item xs={6}>
++                <ActionButton variant="contained" size="large" fullWidth onClick={onCreate}>
++                    {t('plugin_red_packet_send_symbol', {
++                        amount: formatBalance(new BigNumber(settings?.total || 0), settings?.token?.decimals ?? 0),
++                        symbol: settings?.token?.symbol,
++                    })}
++                </ActionButton>
++            </Grid>
++        </Grid>
++    )
++}
