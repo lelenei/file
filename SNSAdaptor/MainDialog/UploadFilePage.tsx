@@ -10,15 +10,17 @@ export interface UploadFilePageProps {
 
 const Container = styled('div')`
     display: flex;
-    flexdirection: column;
+    flex-direction: column;
 `
 
 export const UploadFilePage = memo<UploadFilePageProps>(({ onChange }) => {
     const { t } = useI18N()
-
+    const onFile = (file: File) => {
+        console.log(file.name)
+    }
     return (
         <Container>
-            <UploadFile />
+            <UploadFile maxFileSize={5000000000} onFile={onFile} />
             <UploadFileButtons />
         </Container>
     )

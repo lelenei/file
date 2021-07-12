@@ -1,6 +1,7 @@
-import { NewFolderIcon, UploadFileIcon } from '@masknet/icons'
 import { Button, experimentalStyled as styled } from '@material-ui/core'
 import { memo } from 'react'
+import { NewFolderIcon } from './NewFolder'
+import { UploadFileIcon } from './UploadFileIcon'
 
 const Container = styled('div')`
     display: flex;
