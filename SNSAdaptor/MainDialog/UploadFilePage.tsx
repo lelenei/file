@@ -10,13 +10,14 @@ export interface UploadFilePageProps {
 
 const Container = styled('div')`
     display: flex;
-    flex-direction: column;
+    height: 300px;
+    padding: 8px 0;
 `
 
 export const UploadFilePage = memo<UploadFilePageProps>(({ onChange }) => {
     const { t } = useI18N()
     const onFile = (file: File) => {
-        console.log(file.name)
+        console.log(file)
     }
     return (
         <Container>

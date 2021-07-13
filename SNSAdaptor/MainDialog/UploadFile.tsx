@@ -1,13 +1,13 @@
 import { formatFileSize } from '@dimensiondev/kit'
+import { UploadFileIcon } from '@masknet/icons'
 import { useSnackbar } from '@masknet/theme'
-import { Button, makeStyles, Typography } from '@material-ui/core'
+import { Button, makeStyles, Typography, experimentalStyled as styled } from '@material-ui/core'
 import classNames from 'classnames'
 import { isNil } from 'lodash-es'
 import { memo, useState } from 'react'
 import { useDropArea } from 'react-use'
 import { useI18N } from '../../../../utils'
 import { ArweaveCheckButtons } from './Arweave'
-import { UploadFileIcon } from './UploadFileIcon'
 
 const MAX_FILE_SIZE = formatFileSize(5000000000)
 
@@ -15,7 +15,6 @@ const useUploadFileStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        height: 200,
         flex: 1,
     },
     file: {
@@ -38,6 +37,12 @@ export interface UploadFileProps {
     onFile: (file: File) => void
 }
 
+const Container = styled('div')`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+`
+
 export const UploadFile = memo<UploadFileProps>(({ maxFileSize, onFile }) => {
     const classes = useUploadFileStyles()
     const { t } = useI18N()
@@ -55,7 +60,7 @@ export const UploadFile = memo<UploadFileProps>(({ maxFileSize, onFile }) => {
             }
         },
         onText: () => onError(101),
-        onUri: () => onError(101),
+        onUri: (url: string) => onError(101),
     })
 
     const onError = (code: number) => {
@@ -79,7 +84,7 @@ export const UploadFile = memo<UploadFileProps>(({ maxFileSize, onFile }) => {
         }
     }
     return (
-        <>
+        <Container>
             <div className={classNames(classes.root, { [classes.over]: over })} {...bond}>
                 <input type="file" onInput={onInput} hidden />
                 {!selectedFile && (
@@ -99,6 +104,6 @@ export const UploadFile = memo<UploadFileProps>(({ maxFileSize, onFile }) => {
                     {t('plugin_file_service_on_insert')}
                 </Button>
             )}
-        </>
+        </Container>
     )
 })

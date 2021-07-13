@@ -2,7 +2,9 @@ import { makeStyles, Typography } from '@material-ui/core'
 import { memo } from 'react'
 
 const useStyles = makeStyles((theme) => ({
-    root: {},
+    name: {
+        fontSize: 16,
+    },
 }))
 
 export interface FileNameProps {
@@ -11,7 +13,7 @@ export interface FileNameProps {
 export const FileName = memo<FileNameProps>(({ name }) => {
     const classes = useStyles()
     return (
-        <Typography variant="body1" className={classes.root}>
+        <Typography variant="body1" className={classes.name}>
             {name}
         </Typography>
     )

@@ -1,23 +1,38 @@
-import { Button, experimentalStyled as styled } from '@material-ui/core'
+import { NewFolderIcon } from '@masknet/icons'
+import { Button, makeStyles } from '@material-ui/core'
 import { memo } from 'react'
-import { NewFolderIcon } from './NewFolder'
-import { UploadFileIcon } from './UploadFileIcon'
 
-const Container = styled('div')`
-    display: flex;
-    flex-direction: column;
-`
+const useStyles = makeStyles((theme) => ({
+    section: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    button: {
+        background: 'none',
+    },
+}))
+
 export interface UploadFileButtonsProps {}
 
 export const UploadFileButtons = memo<UploadFileButtonsProps>(() => {
+    const classes = useStyles()
+
     return (
-        <Container>
-            <Button variant="contained" startIcon={<UploadFileIcon fontSize="small" viewBox="0 0 20 20" />}>
+        <section className={classes.section}>
+            <Button
+                className={classes.button}
+                variant="contained"
+                align="left"
+                startIcon={<NewFolderIcon fontSize="inherit" />}>
                 Upload
             </Button>
-            <Button variant="contained" startIcon={<NewFolderIcon fontSize="small" viewBox="0 0 20 20" />}>
+            <Button
+                className={classes.button}
+                align="left"
+                variant="contained"
+                startIcon={<NewFolderIcon fontSize="inherit" />}>
                 New Folder
             </Button>
-        </Container>
+        </section>
     )
 })
