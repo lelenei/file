@@ -12,5 +12,5 @@ export const UploadFileIcon = createIcon(
             fill="#15181B"
         />
     </>,
-    '0 0 20 20',
+    '0 0 36 36',
 )

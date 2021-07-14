@@ -1,5 +1,4 @@
 import { formatFileSize } from '@dimensiondev/kit'
-import { UploadFileIcon } from '@masknet/icons'
 import { useSnackbar } from '@masknet/theme'
 import { Button, makeStyles, Typography, experimentalStyled as styled } from '@material-ui/core'
 import classNames from 'classnames'
@@ -8,6 +7,7 @@ import { memo, useState } from 'react'
 import { useDropArea } from 'react-use'
 import { useI18N } from '../../../../utils'
 import { ArweaveCheckButtons } from './Arweave'
+import { UploadFileIcon } from './UploadFileIcon'
 
 const MAX_FILE_SIZE = formatFileSize(5000000000)
 
@@ -90,7 +90,7 @@ export const UploadFile = memo<UploadFileProps>(({ maxFileSize, onFile }) => {
                 {!selectedFile && (
                     <>
                         <div className={classes.file}>
-                            <UploadFileIcon fontSize="large" viewBox="0 0 40 40" />
+                            <UploadFileIcon fontSize="large" />
                             <Typography component="p">Drop a file here to upload</Typography>
                             <Typography component="p">Size limited 10.5m</Typography>
                         </div>

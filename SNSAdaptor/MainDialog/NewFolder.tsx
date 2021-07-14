@@ -1,4 +1,5 @@
 import { createIcon } from '@masknet/icons'
+import { MaskColorVar } from '@masknet/theme'
 
 export const NewFolderIcon = createIcon(
     'NewFolderIcon',
@@ -9,6 +10,7 @@ export const NewFolderIcon = createIcon(
             strokeWidth="1.25"
             strokeLinecap="round"
             strokeLinejoin="round"
+            fill="white"
         />
         <path
             d="M10 9.16663V14.1666"
@@ -16,8 +18,15 @@ export const NewFolderIcon = createIcon(
             strokeWidth="1.25"
             strokeLinecap="round"
             strokeLinejoin="round"
+            fill={MaskColorVar.primaryBackground}
         />
-        <path d="M7.5 11.6666H12.5" stroke="#15181B" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+            d="M7.5 11.6666H12.5"
+            stroke="#15181B"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill={MaskColorVar.primaryBackground}
+        />
     </>,
-    '0 0 20 20',
 )
