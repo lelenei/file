@@ -1,8 +1,7 @@
+import { NewFolderIcon, UploadFileIcon } from '@masknet/icons'
 import { MaskColorVar } from '@masknet/theme'
 import { Button, makeStyles } from '@material-ui/core'
 import { memo } from 'react'
-import { NewFolderIcon } from './NewFolder'
-import { UploadFileIcon } from './UploadFileIcon'
 
 const useStyles = makeStyles((theme) => ({
     section: {

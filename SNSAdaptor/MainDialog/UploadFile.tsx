@@ -3,11 +3,12 @@ import { useSnackbar } from '@masknet/theme'
 import { Button, makeStyles, Typography, experimentalStyled as styled } from '@material-ui/core'
 import classNames from 'classnames'
 import { isNil } from 'lodash-es'
-import { memo, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { useDropArea } from 'react-use'
 import { useI18N } from '../../../../utils'
 import { ArweaveCheckButtons } from './Arweave'
-import { UploadFileIcon } from './UploadFileIcon'
+import { UploadFileIcon } from '@masknet/icons'
+import { UploadFilesList } from './FileList'
 
 const MAX_FILE_SIZE = formatFileSize(5000000000)
 
@@ -16,6 +17,8 @@ const useUploadFileStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
+        marginBottom: theme.spacing(1),
+        overflowY: 'auto',
     },
     file: {
         display: 'flex',
@@ -42,22 +45,25 @@ const Container = styled('div')`
     flex-direction: column;
     flex: 1;
 `
+interface RouteState {
+    key: string | undefined
+    name: string
+    size: number
+    type: string
+    block: Uint8Array
+    checksum: string
+    useCDN: boolean
+}
 
 export const UploadFile = memo<UploadFileProps>(({ maxFileSize, onFile }) => {
     const classes = useUploadFileStyles()
     const { t } = useI18N()
-    const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([])
     const snackbar = useSnackbar()
+    const [sendFiles, setSendFiles] = useState<File[]>([])
     const [bond, { over }] = useDropArea({
         onFiles(files) {
-            if (files.length > 1) {
-                onError(101)
-            } else if (files[0].size > maxFileSize) {
-                onError(102)
-            } else {
-                onFile(files[0])
-                setSelectedFile(files[0])
-            }
+            setSelectedFiles(files)
         },
         onText: () => onError(101),
         onUri: (url: string) => onError(101),
@@ -83,11 +89,16 @@ export const UploadFile = memo<UploadFileProps>(({ maxFileSize, onFile }) => {
             onFile(file)
         }
     }
+    const onChange = (files: File[]) => {
+        setSendFiles(files)
+    }
+
+    const onSend = useCallback(() => {}, [])
     return (
         <Container>
             <div className={classNames(classes.root, { [classes.over]: over })} {...bond}>
                 <input type="file" onInput={onInput} hidden />
-                {!selectedFile && (
+                {selectedFiles.length === 0 ? (
                     <>
                         <div className={classes.file}>
                             <UploadFileIcon fontSize="large" />
@@ -96,11 +107,13 @@ export const UploadFile = memo<UploadFileProps>(({ maxFileSize, onFile }) => {
                         </div>
                         <ArweaveCheckButtons />
                     </>
+                ) : (
+                    <UploadFilesList files={selectedFiles} onChange={onChange} />
                 )}
             </div>
 
-            {selectedFile && (
-                <Button variant="contained" classes={{ root: '' }} disabled={isNil(selectedFile)}>
+            {selectedFiles.length > 0 && (
+                <Button variant="contained" classes={{ root: '' }} disabled={sendFiles.length === 0} onClick={onSend}>
                     {t('plugin_file_service_on_insert')}
                 </Button>
             )}

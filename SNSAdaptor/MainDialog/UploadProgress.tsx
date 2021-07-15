@@ -1,10 +1,13 @@
 import { memo } from 'react'
-import type { FileInfo } from '../../types'
-import { experimentalStyled as styled, Typography, LinearProgress, makeStyles } from '@material-ui/core'
+import { experimentalStyled as styled, Typography, LinearProgress, makeStyles, Link } from '@material-ui/core'
+import { formatFileSize } from '@dimensiondev/kit'
 
 const useStyles = makeStyles((theme) => ({
-    file: {
+    file: {},
+    info: {
         padding: theme.spacing(1),
+        display: 'flex',
+        justifyContent: 'space-between',
     },
 }))
 const Container = styled('div')`
@@ -13,19 +16,33 @@ const Container = styled('div')`
 `
 
 export interface UploadFileProgressProps {
-    file?: FileInfo
-    size: number
+    file?: File
+    sendSize?: number
 }
 
-export const UploadFileProgress = memo<UploadFileProgressProps>(({ file, size = 0 }) => {
+export const UploadFileProgress = memo<UploadFileProgressProps>(({ file, sendSize = 0 }) => {
     const classes = useStyles()
-
+    const value = (sendSize ?? 0 / (file?.size ?? 1)) * 100
     return (
         <Container>
-            <Typography variant="body2" className={classes.file}>
-                {file?.name ?? 'abcd.txt'}
-            </Typography>
-            <LinearProgress value={size / (file?.size ?? 1)} variant="determinate" />
+            {file ? (
+                <>
+                    <div className={classes.info}>
+                        <Typography variant="body2" className={classes.file}>
+                            {file?.name ?? 'abc.txt'}
+                        </Typography>
+                        <Typography variant="body2">
+                            {formatFileSize(sendSize)}/{formatFileSize(file?.size ?? 0)}
+                        </Typography>
+                    </div>
+                    <LinearProgress value={value} variant="determinate" />
+                </>
+            ) : (
+                <Typography variant="body1" color="textPrimary">
+                    Mask Network uses Arweave, IPFS, etc. for storage services, please check the{' '}
+                    <Link href="#">Privacy policy</Link>.
+                </Typography>
+            )}
         </Container>
     )
 })
