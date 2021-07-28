@@ -8,6 +8,7 @@ import type { FileInfo } from '../types'
 import { FileServiceDialogNew } from './NewMainDialog'
 //import FileServiceDialog from './MainDialog'
 import { Preview } from './Preview'
+///
 
 const definition: Plugin.SNSAdaptor.Definition = {
     ...base,
